@@ -10,4 +10,5 @@ The final visualization can be directly downloaded and accessed as a HTML file u
 The methodogy, workflow, discussion and limitations of the project are extensively described in the main Jupyter Notebook titled ```Harry Potter Project.ipynb``` and the raw txt files of the books can be found in the ```HP text files``` directory.
 
 ## Questions
+I am a Data Journalist and an ex-Scientist. 
 For questions please contact [Anusha Subramanian](mailto:anusha.subramanian@berkeley.edu)
