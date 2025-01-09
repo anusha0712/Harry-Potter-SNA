@@ -1,5 +1,5 @@
 # Network of Magic in the Harry Potter Series
-## A Digital Humanities Project at UC Berkeley 
+### A Digital Humanities Project at UC Berkeley 
 
 This is a passion project aimed at using Social Network Analysis (SNA) to map the 'Network of Magic' aka network of spell usage by characters within the Harry Potter series. 
 
