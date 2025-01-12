@@ -1,0 +1,204 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1>None</h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 100%;
+            height: 750;
+            background-color: #222222;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+        #loadingBar {
+            position:absolute;
+            top:0px;
+            left:0px;
+            width: 100%;
+            height: 750;
+            background-color:rgba(200,200,200,0.8);
+            -webkit-transition: all 0.5s ease;
+            -moz-transition: all 0.5s ease;
+            -ms-transition: all 0.5s ease;
+            -o-transition: all 0.5s ease;
+            transition: all 0.5s ease;
+            opacity:1;
+        }
+
+        #bar {
+            position:absolute;
+            top:0px;
+            left:0px;
+            width:20px;
+            height:20px;
+            margin:auto auto auto auto;
+            border-radius:11px;
+            border:2px solid rgba(30,30,30,0.05);
+            background: rgb(0, 173, 246); /* Old browsers */
+            box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
+        }
+
+        #border {
+            position:absolute;
+            top:10px;
+            left:10px;
+            width:500px;
+            height:23px;
+            margin:auto auto auto auto;
+            box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+            border-radius:10px;
+        }
+
+        #text {
+            position:absolute;
+            top:8px;
+            left:530px;
+            width:30px;
+            height:50px;
+            margin:auto auto auto auto;
+            font-size:22px;
+            color: #000000;
+        }
+
+        div.outerBorder {
+            position:relative;
+            top:400px;
+            width:600px;
+            height:44px;
+            margin:auto auto auto auto;
+            border:8px solid rgba(0,0,0,0.1);
+            background: rgb(252,252,252); /* Old browsers */
+            background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+            background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+            background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+            background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+            background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+            border-radius:72px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+        }
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+<div id="loadingBar">
+    <div class="outerBorder">
+        <div id="text">0%</div>
+        <div id="border">
+            <div id="bar"></div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"font": {"color": "white"}, "id": "Sirius Black", "label": "Sirius Black", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Accio", "label": "Accio", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Alohomora", "label": "Alohomora", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Expecto Patronum", "label": "Expecto Patronum", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Impedimenta", "label": "Impedimenta", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Petrificus Totalus", "label": "Petrificus Totalus", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Albus Dumbledore", "label": "Albus Dumbledore", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Aguamenti", "label": "Aguamenti", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Avada Kedavra", "label": "Avada Kedavra", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Legilimens", "label": "Legilimens", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Lumos", "label": "Lumos", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Portus", "label": "Portus", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Rennervate", "label": "Rennervate", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Filius Flitwick", "label": "Filius Flitwick", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Banishing Charm", "label": "Banishing Charm", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Hermione Granger", "label": "Hermione Granger", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "CaveInimicum", "label": "CaveInimicum", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Colloportus", "label": "Colloportus", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Confringo", "label": "Confringo", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Crucio", "label": "Crucio", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Defodio", "label": "Defodio", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Diffindo", "label": "Diffindo", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Expelliarmus", "label": "Expelliarmus", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Finite Incantatem", "label": "Finite Incantatem", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Homenum Revelio", "label": "Homenum Revelio", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Impervius", "label": "Impervius", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "LocomotorMortis", "label": "LocomotorMortis", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Muffliato", "label": "Muffliato", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Nox", "label": "Nox", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Obliviate", "label": "Obliviate", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Protego", "label": "Protego", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Relashio", "label": "Relashio", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Reparo", "label": "Reparo", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Salvio Hexia", "label": "Salvio Hexia", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Silencio", "label": "Silencio", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Stupefy", "label": "Stupefy", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Tergeo", "label": "Tergeo", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Wingardium Leviosa", "label": "Wingardium Leviosa", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Rubeus Hagrid", "label": "Rubeus Hagrid", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Harry Potter", "label": "Harry Potter", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Evanesco", "label": "Evanesco", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Expulso", "label": "Expulso", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Imperio", "label": "Imperio", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Incarcerous", "label": "Incarcerous", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Incendio", "label": "Incendio", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Langlock", "label": "Langlock", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Levicorpus", "label": "Levicorpus", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Locomotor", "label": "Locomotor", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Point Me", "label": "Point Me", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Prior Incantato", "label": "Prior Incantato", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "ProtegoTotalum", "label": "ProtegoTotalum", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Reducto", "label": "Reducto", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Repello Muggletum", "label": "Repello Muggletum", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Riddikulus", "label": "Riddikulus", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Sectumsempra", "label": "Sectumsempra", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Specialis Revelio", "label": "Specialis Revelio", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Severus Snape", "label": "Severus Snape", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Dolores Umbridge", "label": "Dolores Umbridge", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Ron Weasley", "label": "Ron Weasley", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Descendo", "label": "Descendo", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Erecto", "label": "Erecto", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Meteolojinx Recanto", "label": "Meteolojinx Recanto", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Gilderoy Lockhart", "label": "Gilderoy Lockhart", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Peskipiksi Pesternomi", "label": "Peskipiksi Pesternomi", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Horace Slughorn", "label": "Horace Slughorn", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Anapneo", "label": "Anapneo", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Charity Burbage", "label": "Charity Burbage", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Draco Malfoy", "label": "Draco Malfoy", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Confundo", "label": "Confundo", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "James Potter", "label": "James Potter", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Scourgify", "label": "Scourgify", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Lord Voldemort", "label": "Lord Voldemort", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Arthur Weasley", "label": "Arthur Weasley", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Bellatrix Lestrange.", "label": "Bellatrix Lestrange.", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Amycus Carrow", "label": "Amycus Carrow", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Viktor Krum", "label": "Viktor Krum", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Neville Longbottom", "label": "Neville Longbottom", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Reducio", "label": "Reducio", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Andromeda Tonks", "label": "Andromeda Tonks", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Episkey", "label": "Episkey", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Ginny Weasley", "label": "Ginny Weasley", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Bill Weasley", "label": "Bill Weasley", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Phineas Nigellus Black", "label": "Phineas Nigellus Black", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Remus Lupin", "label": "Remus Lupin", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Argus Filch", "label": "Argus Filch", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Mundungus Fletcher", "label": "Mundungus Fletcher", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Gregory Goyle", "label": "Gregory Goyle", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Stan Shunpike", "label": "Stan Shunpike", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Zacharias Smith", "label": "Zacharias Smith", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Luna Lovegood", "label": "Luna Lovegood", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Flagrate", "label": "Flagrate", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Vincent Crabbe", "label": "Vincent Crabbe", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Furnunculus", "label": "Furnunculus", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "George Weasley", "label": "George Weasley", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Angelina Johnson", "label": "Angelina Johnson", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Cedric Diggory", "label": "Cedric Diggory", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Vernon Dursley", "label": "Vernon Dursley", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Sybill Trelawney", "label": "Sybill Trelawney", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Poppy Pomfrey", "label": "Poppy Pomfrey", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Antonin Dolohov", "label": "Antonin Dolohov", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Minerva McGonagall", "label": "Minerva McGonagall", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "PiertotumLocomotor", "label": "PiertotumLocomotor", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Helena Ravenclaw", "label": "Helena Ravenclaw", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "ProtegoHorribilis", "label": "ProtegoHorribilis", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Padma Patil", "label": "Padma Patil", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Marvolo Gaunt", "label": "Marvolo Gaunt", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Ludo Bagman", "label": "Ludo Bagman", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Sonorus", "label": "Sonorus", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Ernie Macmillan", "label": "Ernie Macmillan", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Fenrir Greyback", "label": "Fenrir Greyback", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Corban Yaxley", "label": "Corban Yaxley", "shape": "dot", "size": 10}, {"font": {"color": "white"}, "id": "Bathilda Bagshot", "label": "Bathilda Bagshot", "shape": "dot", "size": 10}]);
+        edges = new vis.DataSet([{"from": "Sirius Black", "to": "Accio", "weight": 2}, {"from": "Sirius Black", "to": "Alohomora", "weight": 1}, {"from": "Sirius Black", "to": "Expecto Patronum", "weight": 3}, {"from": "Sirius Black", "to": "Impedimenta", "weight": 1}, {"from": "Sirius Black", "to": "Petrificus Totalus", "weight": 1}, {"from": "Albus Dumbledore", "to": "Accio", "weight": 2}, {"from": "Albus Dumbledore", "to": "Aguamenti", "weight": 2}, {"from": "Albus Dumbledore", "to": "Avada Kedavra", "weight": 2}, {"from": "Albus Dumbledore", "to": "Legilimens", "weight": 1}, {"from": "Albus Dumbledore", "to": "Lumos", "weight": 2}, {"from": "Albus Dumbledore", "to": "Portus", "weight": 1}, {"from": "Albus Dumbledore", "to": "Rennervate", "weight": 2}, {"from": "Filius Flitwick", "to": "Accio", "weight": 1}, {"from": "Filius Flitwick", "to": "Banishing Charm", "weight": 2}, {"from": "Filius Flitwick", "to": "Aguamenti", "weight": 1}, {"from": "Hermione Granger", "to": "Accio", "weight": 4}, {"from": "Hermione Granger", "to": "Alohomora", "weight": 1}, {"from": "Hermione Granger", "to": "Avada Kedavra", "weight": 1}, {"from": "Hermione Granger", "to": "CaveInimicum", "weight": 1}, {"from": "Hermione Granger", "to": "Colloportus", "weight": 1}, {"from": "Hermione Granger", "to": "Confringo", "weight": 1}, {"from": "Hermione Granger", "to": "Crucio", "weight": 1}, {"from": "Hermione Granger", "to": "Defodio", "weight": 1}, {"from": "Hermione Granger", "to": "Diffindo", "weight": 3}, {"from": "Hermione Granger", "to": "Expecto Patronum", "weight": 6}, {"from": "Hermione Granger", "to": "Expelliarmus", "weight": 1}, {"from": "Hermione Granger", "to": "Finite Incantatem", "weight": 1}, {"from": "Hermione Granger", "to": "Homenum Revelio", "weight": 1}, {"from": "Hermione Granger", "to": "Impervius", "weight": 1}, {"from": "Hermione Granger", "to": "LocomotorMortis", "weight": 1}, {"from": "Hermione Granger", "to": "Muffliato", "weight": 5}, {"from": "Hermione Granger", "to": "Nox", "weight": 1}, {"from": "Hermione Granger", "to": "Obliviate", "weight": 1}, {"from": "Hermione Granger", "to": "Petrificus Totalus", "weight": 1}, {"from": "Hermione Granger", "to": "Protego", "weight": 1}, {"from": "Hermione Granger", "to": "Relashio", "weight": 1}, {"from": "Hermione Granger", "to": "Reparo", "weight": 3}, {"from": "Hermione Granger", "to": "Salvio Hexia", "weight": 1}, {"from": "Hermione Granger", "to": "Silencio", "weight": 4}, {"from": "Hermione Granger", "to": "Stupefy", "weight": 2}, {"from": "Hermione Granger", "to": "Tergeo", "weight": 1}, {"from": "Hermione Granger", "to": "Wingardium Leviosa", "weight": 1}, {"from": "Rubeus Hagrid", "to": "Accio", "weight": 1}, {"from": "Rubeus Hagrid", "to": "Aguamenti", "weight": 2}, {"from": "Rubeus Hagrid", "to": "Lumos", "weight": 1}, {"from": "Harry Potter", "to": "Accio", "weight": 15}, {"from": "Harry Potter", "to": "Aguamenti", "weight": 3}, {"from": "Harry Potter", "to": "Alohomora", "weight": 3}, {"from": "Harry Potter", "to": "Avada Kedavra", "weight": 7}, {"from": "Harry Potter", "to": "Colloportus", "weight": 1}, {"from": "Harry Potter", "to": "Confringo", "weight": 1}, {"from": "Harry Potter", "to": "Crucio", "weight": 5}, {"from": "Harry Potter", "to": "Diffindo", "weight": 1}, {"from": "Harry Potter", "to": "Evanesco", "weight": 1}, {"from": "Harry Potter", "to": "Expecto Patronum", "weight": 23}, {"from": "Harry Potter", "to": "Expelliarmus", "weight": 5}, {"from": "Harry Potter", "to": "Expulso", "weight": 1}, {"from": "Harry Potter", "to": "Homenum Revelio", "weight": 1}, {"from": "Harry Potter", "to": "Impedimenta", "weight": 5}, {"from": "Harry Potter", "to": "Imperio", "weight": 4}, {"from": "Harry Potter", "to": "Incarcerous", "weight": 1}, {"from": "Harry Potter", "to": "Incendio", "weight": 1}, {"from": "Harry Potter", "to": "Langlock", "weight": 1}, {"from": "Harry Potter", "to": "Legilimens", "weight": 1}, {"from": "Harry Potter", "to": "Levicorpus", "weight": 1}, {"from": "Harry Potter", "to": "Locomotor", "weight": 1}, {"from": "Harry Potter", "to": "Lumos", "weight": 8}, {"from": "Harry Potter", "to": "Muffliato", "weight": 3}, {"from": "Harry Potter", "to": "Nox", "weight": 1}, {"from": "Harry Potter", "to": "Petrificus Totalus", "weight": 7}, {"from": "Harry Potter", "to": "Point Me", "weight": 2}, {"from": "Harry Potter", "to": "Prior Incantato", "weight": 1}, {"from": "Harry Potter", "to": "Protego", "weight": 3}, {"from": "Harry Potter", "to": "ProtegoTotalum", "weight": 1}, {"from": "Harry Potter", "to": "Reducto", "weight": 3}, {"from": "Harry Potter", "to": "Relashio", "weight": 1}, {"from": "Harry Potter", "to": "Reparo", "weight": 2}, {"from": "Harry Potter", "to": "Repello Muggletum", "weight": 1}, {"from": "Harry Potter", "to": "Riddikulus", "weight": 1}, {"from": "Harry Potter", "to": "Sectumsempra", "weight": 7}, {"from": "Harry Potter", "to": "Specialis Revelio", "weight": 1}, {"from": "Harry Potter", "to": "Stupefy", "weight": 11}, {"from": "Harry Potter", "to": "Wingardium Leviosa", "weight": 1}, {"from": "Severus Snape", "to": "Accio", "weight": 1}, {"from": "Severus Snape", "to": "Expecto Patronum", "weight": 1}, {"from": "Severus Snape", "to": "Expelliarmus", "weight": 1}, {"from": "Severus Snape", "to": "Finite Incantatem", "weight": 1}, {"from": "Severus Snape", "to": "Legilimens", "weight": 2}, {"from": "Severus Snape", "to": "Levicorpus", "weight": 1}, {"from": "Severus Snape", "to": "Protego", "weight": 2}, {"from": "Severus Snape", "to": "Reparo", "weight": 1}, {"from": "Severus Snape", "to": "Sectumsempra", "weight": 1}, {"from": "Dolores Umbridge", "to": "Accio", "weight": 1}, {"from": "Dolores Umbridge", "to": "Expecto Patronum", "weight": 1}, {"from": "Dolores Umbridge", "to": "Incarcerous", "weight": 1}, {"from": "Dolores Umbridge", "to": "Muffliato", "weight": 1}, {"from": "Dolores Umbridge", "to": "Silencio", "weight": 1}, {"from": "Dolores Umbridge", "to": "Stupefy", "weight": 2}, {"from": "Ron Weasley", "to": "Accio", "weight": 2}, {"from": "Ron Weasley", "to": "Avada Kedavra", "weight": 4}, {"from": "Ron Weasley", "to": "Descendo", "weight": 2}, {"from": "Ron Weasley", "to": "Diffindo", "weight": 2}, {"from": "Ron Weasley", "to": "Erecto", "weight": 1}, {"from": "Ron Weasley", "to": "Expelliarmus", "weight": 1}, {"from": "Ron Weasley", "to": "Impervius", "weight": 1}, {"from": "Ron Weasley", "to": "Levicorpus", "weight": 1}, {"from": "Ron Weasley", "to": "Lumos", "weight": 1}, {"from": "Ron Weasley", "to": "Meteolojinx Recanto", "weight": 1}, {"from": "Ron Weasley", "to": "Obliviate", "weight": 1}, {"from": "Ron Weasley", "to": "Portus", "weight": 1}, {"from": "Ron Weasley", "to": "Protego", "weight": 2}, {"from": "Ron Weasley", "to": "ProtegoTotalum", "weight": 1}, {"from": "Ron Weasley", "to": "Relashio", "weight": 1}, {"from": "Ron Weasley", "to": "Salvio Hexia", "weight": 1}, {"from": "Ron Weasley", "to": "Silencio", "weight": 3}, {"from": "Ron Weasley", "to": "Stupefy", "weight": 1}, {"from": "Ron Weasley", "to": "Tergeo", "weight": 1}, {"from": "Ron Weasley", "to": "Wingardium Leviosa", "weight": 3}, {"from": "Gilderoy Lockhart", "to": "Alohomora", "weight": 1}, {"from": "Gilderoy Lockhart", "to": "Peskipiksi Pesternomi", "weight": 1}, {"from": "Horace Slughorn", "to": "Anapneo", "weight": 1}, {"from": "Charity Burbage", "to": "Avada Kedavra", "weight": 1}, {"from": "Draco Malfoy", "to": "Avada Kedavra", "weight": 1}, {"from": "Draco Malfoy", "to": "Confundo", "weight": 1}, {"from": "Draco Malfoy", "to": "Expelliarmus", "weight": 1}, {"from": "Draco Malfoy", "to": "Impedimenta", "weight": 1}, {"from": "Draco Malfoy", "to": "Lumos", "weight": 1}, {"from": "Draco Malfoy", "to": "Petrificus Totalus", "weight": 1}, {"from": "Draco Malfoy", "to": "Sectumsempra", "weight": 1}, {"from": "James Potter", "to": "Avada Kedavra", "weight": 2}, {"from": "James Potter", "to": "Scourgify", "weight": 1}, {"from": "Lord Voldemort", "to": "Avada Kedavra", "weight": 3}, {"from": "Lord Voldemort", "to": "Expelliarmus", "weight": 3}, {"from": "Arthur Weasley", "to": "Avada Kedavra", "weight": 1}, {"from": "Arthur Weasley", "to": "Meteolojinx Recanto", "weight": 1}, {"from": "Arthur Weasley", "to": "Protego", "weight": 1}, {"from": "Arthur Weasley", "to": "Riddikulus", "weight": 5}, {"from": "Bellatrix Lestrange.", "to": "Colloportus", "weight": 1}, {"from": "Bellatrix Lestrange.", "to": "Crucio", "weight": 1}, {"from": "Bellatrix Lestrange.", "to": "Legilimens", "weight": 1}, {"from": "Bellatrix Lestrange.", "to": "Protego", "weight": 1}, {"from": "Amycus Carrow", "to": "Crucio", "weight": 2}, {"from": "Amycus Carrow", "to": "Imperio", "weight": 1}, {"from": "Viktor Krum", "to": "Crucio", "weight": 1}, {"from": "Neville Longbottom", "to": "Crucio", "weight": 1}, {"from": "Neville Longbottom", "to": "Expelliarmus", "weight": 1}, {"from": "Neville Longbottom", "to": "Impedimenta", "weight": 1}, {"from": "Neville Longbottom", "to": "Levicorpus", "weight": 1}, {"from": "Neville Longbottom", "to": "Petrificus Totalus", "weight": 1}, {"from": "Neville Longbottom", "to": "Reducio", "weight": 1}, {"from": "Neville Longbottom", "to": "Stupefy", "weight": 1}, {"from": "Andromeda Tonks", "to": "Episkey", "weight": 1}, {"from": "Andromeda Tonks", "to": "Scourgify", "weight": 1}, {"from": "Ginny Weasley", "to": "Episkey", "weight": 1}, {"from": "Ginny Weasley", "to": "Incendio", "weight": 1}, {"from": "Ginny Weasley", "to": "Lumos", "weight": 1}, {"from": "Ginny Weasley", "to": "Reducto", "weight": 1}, {"from": "Ginny Weasley", "to": "Sectumsempra", "weight": 1}, {"from": "Bill Weasley", "to": "Evanesco", "weight": 1}, {"from": "Phineas Nigellus Black", "to": "Expecto Patronum", "weight": 2}, {"from": "Remus Lupin", "to": "Expecto Patronum", "weight": 1}, {"from": "Remus Lupin", "to": "Levicorpus", "weight": 1}, {"from": "Remus Lupin", "to": "Riddikulus", "weight": 2}, {"from": "Argus Filch", "to": "Expelliarmus", "weight": 1}, {"from": "Argus Filch", "to": "Muffliato", "weight": 1}, {"from": "Mundungus Fletcher", "to": "Expelliarmus", "weight": 1}, {"from": "Gregory Goyle", "to": "Expelliarmus", "weight": 1}, {"from": "Stan Shunpike", "to": "Expelliarmus", "weight": 1}, {"from": "Zacharias Smith", "to": "Expelliarmus", "weight": 1}, {"from": "Luna Lovegood", "to": "Flagrate", "weight": 1}, {"from": "Luna Lovegood", "to": "Wingardium Leviosa", "weight": 1}, {"from": "Vincent Crabbe", "to": "Furnunculus", "weight": 1}, {"from": "George Weasley", "to": "Impedimenta", "weight": 1}, {"from": "Angelina Johnson", "to": "Impervius", "weight": 3}, {"from": "Cedric Diggory", "to": "Legilimens", "weight": 1}, {"from": "Cedric Diggory", "to": "Lumos", "weight": 1}, {"from": "Vernon Dursley", "to": "Legilimens", "weight": 1}, {"from": "Sybill Trelawney", "to": "Locomotor", "weight": 1}, {"from": "Poppy Pomfrey", "to": "Muffliato", "weight": 2}, {"from": "Antonin Dolohov", "to": "Obliviate", "weight": 1}, {"from": "Minerva McGonagall", "to": "PiertotumLocomotor", "weight": 1}, {"from": "Helena Ravenclaw", "to": "ProtegoHorribilis", "weight": 1}, {"from": "Padma Patil", "to": "Reducto", "weight": 1}, {"from": "Marvolo Gaunt", "to": "Relashio", "weight": 1}, {"from": "Marvolo Gaunt", "to": "Reparo", "weight": 1}, {"from": "Ludo Bagman", "to": "Sonorus", "weight": 1}, {"from": "Ernie Macmillan", "to": "Specialis Revelio", "weight": 1}, {"from": "Fenrir Greyback", "to": "Stupefy", "weight": 1}, {"from": "Corban Yaxley", "to": "Stupefy", "weight": 1}, {"from": "Bathilda Bagshot", "to": "Tergeo", "weight": 1}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+
+        
+
+
+        
+        network.on("stabilizationProgress", function(params) {
+      		document.getElementById('loadingBar').removeAttribute("style");
+	        var maxWidth = 496;
+	        var minWidth = 20;
+	        var widthFactor = params.iterations/params.total;
+	        var width = Math.max(minWidth,maxWidth * widthFactor);
+
+	        document.getElementById('bar').style.width = width + 'px';
+	        document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+	    });
+	    network.once("stabilizationIterationsDone", function() {
+	        document.getElementById('text').innerHTML = '100%';
+	        document.getElementById('bar').style.width = '496px';
+	        document.getElementById('loadingBar').style.opacity = 0;
+	        // really clean the dom element
+	        setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
+	    });
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>
